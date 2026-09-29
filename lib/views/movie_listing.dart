@@ -26,8 +26,30 @@ class MovieListing extends StatelessWidget {
               fontWeight: FontWeight.bold,
               ),
             ),
+            
             const SizedBox(height: 20),
-            const Text("A comedy about a bachelor party in Las Vegas."),
+            const Text("Southsea Ciname Room"),
+
+            const SizedBox(height: 20),
+            const Text("Thursday 22 Oct 2026, 18:00 - ends at 19.14"),
+
+            const SizedBox(height: 40),
+            const Text("Please note that Discounts / Membership Benefits will be applied once you have selected your tickets"),
+
+            const SizedBox(height: 20),
+            const Text("Select Quantiities (Up to 5 in total)"),
+
+            const SizedBox(height: 40),
+            const Text("Tickets",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            
+
+          
           ]
         ),
       )
