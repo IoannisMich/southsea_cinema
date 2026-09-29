@@ -14,8 +14,24 @@ class MovieListing extends StatelessWidget {
         iconTheme: const IconThemeData(color: cinemaBrand),
         elevation: 0,
       ),
+      
       drawer: const NavDrawer(),
-      body: const SizedBox.shrink(),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:[
+            const Text("The Hangover (2009)",
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text("A comedy about a bachelor party in Las Vegas."),
+          ]
+        ),
+      )
     );
   }
+  
 }
