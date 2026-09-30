@@ -11,22 +11,22 @@ class MovieListing extends StatefulWidget {
 
 class _MovieListingState extends State<MovieListing> {
   int _ticketquantiry = 1;
+  String _feedback = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(appTitle, style: cinemaHeaderStyle),
-          backgroundColor: cinemaSurface,
-          iconTheme: const IconThemeData(color: cinemaBrand),
-          elevation: 0,
-        ),
-
-        drawer: const NavDrawer(),
-        
-        body: Container(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: const Text(appTitle, style: cinemaHeaderStyle),
+        backgroundColor: cinemaSurface,
+        iconTheme: const IconThemeData(color: cinemaBrand),
+        elevation: 0,
+      ),
+      drawer: const NavDrawer(),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             const Text(
               "The Hangover (2009)",
               style: TextStyle(
@@ -51,38 +51,49 @@ class _MovieListingState extends State<MovieListing> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             const SizedBox(height: 10),
-        Row(
-          children: [
-            DropdownMenu<int>(
-              initialSelection: 1,
-              onSelected: (int? value){
-                if (value != null){
-                  setState(() {
-                    _ticketquantiry = value;
-                  });
-                }
-              },
-              dropdownMenuEntries: [ 
-                DropdownMenuEntry(value: 1, label: '1'), DropdownMenuEntry(value: 2, label: '2'), DropdownMenuEntry(value: 3, label: '3'), DropdownMenuEntry(value: 4, label: '4'), DropdownMenuEntry(value: 5, label: '5'), 
-              
+            Row(
+              children: [
+                DropdownMenu<int>(
+                  initialSelection: 1,
+                  onSelected: (int? value) {
+                    if (value != null) {
+                      setState(() {
+                        _ticketquantiry = value;
+                      });
+                    }
+                  },
+                  dropdownMenuEntries: [
+                    DropdownMenuEntry(value: 1, label: '1'),
+                    DropdownMenuEntry(value: 2, label: '2'),
+                    DropdownMenuEntry(value: 3, label: '3'),
+                    DropdownMenuEntry(value: 4, label: '4'),
+                    DropdownMenuEntry(value: 5, label: '5'),
+                  ],
+                ),
+                const SizedBox(width: 15),
+                const Text(
+                  "Adult (£7.50)",
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
               ],
             ),
-
-            const SizedBox(width: 15),
-
-            const Text(
-              "Adult (£7.50)",
-              style: TextStyle(
-                fontSize: 15,
-              ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _feedback = '$_ticketquantiry ticket(s) added to basket';
+                });
+              },
+              child: const Text("ADD TO ORDER"),
             ),
+            const SizedBox(height: 20),
+            Text(_feedback)
           ],
-        ),  
-        ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
