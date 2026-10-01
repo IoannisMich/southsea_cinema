@@ -10,7 +10,7 @@ class MovieListing extends StatefulWidget {
 }
 
 class _MovieListingState extends State<MovieListing> {
-  int _ticketquantiry = 1;
+  int _ticketquantity = 1;
   String _feedback = "";
 
   @override
@@ -35,7 +35,7 @@ class _MovieListingState extends State<MovieListing> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text("Southsea Ciname Room"),
+            const Text("Southsea Cinema Room"),
             const SizedBox(height: 20),
             const Text("Thursday 22 Oct 2026, 18:00 - ends at 19.14"),
             const SizedBox(height: 40),
@@ -59,7 +59,7 @@ class _MovieListingState extends State<MovieListing> {
                   onSelected: (int? value) {
                     if (value != null) {
                       setState(() {
-                        _ticketquantiry = value;
+                        _ticketquantity = value;
                       });
                     }
                   },
@@ -84,7 +84,7 @@ class _MovieListingState extends State<MovieListing> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  _feedback = '$_ticketquantiry ticket(s) added to basket';
+                  _feedback = '$_ticketquantity ticket(s) added to basket';
                 });
               },
               child: const Text("ADD TO ORDER"),
