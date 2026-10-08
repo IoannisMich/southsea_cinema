@@ -1,21 +1,17 @@
 class Movie {
   final String id;
   final String title;
-  final int releaseYear;
+  final String ageRating;
   final String description;
-  final String screen;
-  final DateTime startTime;
-  final DateTime endTime;
-  final double adultTicketPrice;
+  final String posterImagePath;
+  final List<String> showtimes;
 
   Movie({
     required this.id,
     required this.title,
-    required this.releaseYear,
+    required this.ageRating,
     required this.description,
-    required this.screen,
-    required this.startTime,
-    required this.endTime,
-    required this.adultTicketPrice,
+    required this.posterImagePath,
+    required this.showtimes,
     });
 }
