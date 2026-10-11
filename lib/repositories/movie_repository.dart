@@ -12,6 +12,7 @@ class MovieRepository {
             'with no memory of the night before, and the groom is missing.',
         posterImagePath: 'assets/images/thehangover.jpg',
         showtimes: ['Thursday 22 Oct 2026 18:00'],
+        price: 7.50,
       ),
       Movie(
         id: 'fight-club',
@@ -23,6 +24,7 @@ class MovieRepository {
             'that spirals out of control.',
         posterImagePath: 'assets/images/fightclub.jpg',
         showtimes: ['Saturday 24 Oct 2026 20:00'],
+        price: 6.00,
       ),
     ];
   }

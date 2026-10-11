@@ -57,7 +57,7 @@ class MovieCard extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Screening times + booking button
-          const Text('BOOK TICKETS', style: bodyStyle),
+          Text('BOOK TICKETS - ${movie.formattedPrice}', style: bodyStyle),
           const SizedBox(height: 8),
           for (final showtime in movie.showtimes)
             Padding(
