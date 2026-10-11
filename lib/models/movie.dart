@@ -15,9 +15,8 @@ class Movie {
     required this.posterImagePath,
     required this.showtimes,
     required this.price,
-    });
+  });
 
-  
   String get formattedPrice => '£${price.toStringAsFixed(2)}';
 
   bool get isChildFriendly => ageRating == 'U' || ageRating == 'PG';
