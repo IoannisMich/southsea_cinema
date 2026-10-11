@@ -12,8 +12,7 @@ class MovieListing extends StatefulWidget {
 }
 
 class _MovieListingState extends State<MovieListing> {
-  int _ticketquantity = 1;
-  String _feedback = "";
+
 
   @override
   Widget build(BuildContext context) {
