@@ -28,4 +28,21 @@ class MovieRepository {
       ),
     ];
   }
+
+  Movie? getMovieById(String id) {
+    for (final movie in getMovies()) {
+      if (movie.id == id) {
+        return movie;
+      }
+    }
+    return null;
+  }
+
+  List<Movie> getMoviesByAgeRating(String rating) {
+    return getMovies().where((movie) => movie.ageRating == rating).toList();
+  }
+
+  List<Movie> getMoviesUnderPrice(double maxPrice) {
+    return getMovies().where((movie) => movie.price < maxPrice).toList();
+  }
 }
