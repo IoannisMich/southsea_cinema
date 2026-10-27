@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/models/movie.dart';
+import 'package:southsea_cinema/models/ticket_item.dart';
+import 'package:southsea_cinema/repositories/basket_repository.dart';
+import 'package:southsea_cinema/widgets/primary_button.dart';
 
 class MovieListing extends StatefulWidget {
   final Movie movie;
@@ -14,6 +17,23 @@ class MovieListing extends StatefulWidget {
 class _MovieListingState extends State<MovieListing> {
   int _ticketQuantity = 1;
   String _feedback = '';
+  void _addToBasket() {
+    if (_ticketQuantity > 0) {
+      final TicketItem item = TicketItem(
+        movie: widget.movie,
+        quantity: _ticketQuantity,
+      );
+      BasketRepository.instance.addItem(item);
+      setState(() {
+        _feedback =
+            'Added $_ticketQuantity ticket(s) for ${widget.movie.title} to basket';
+      });
+    } else {
+      setState(() {
+        _feedback = 'Please select at least 1 ticket';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +101,9 @@ class _MovieListingState extends State<MovieListing> {
               ],
             ),
             const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _feedback =
-                      '$_ticketQuantity ticket(s) for ${movie.title} added to basket';
-                });
-              },
-              child: const Text('ADD TO ORDER'),
+            PrimaryButton(
+              label: 'ADD TO ORDER',
+              onPressed: _addToBasket,
             ),
             const SizedBox(height: 20),
             Text(_feedback),
