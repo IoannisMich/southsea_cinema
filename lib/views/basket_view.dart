@@ -60,6 +60,26 @@ class _BasketViewState extends State<BasketView> {
     );
   }
 
+  Widget _buildTotalRow(String label, String value, {bool emphasise = false}) {
+    final TextStyle style;
+    if (emphasise) {
+      style = const TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
+    } else {
+      style = const TextStyle(color: cinemaFontWhite);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: style),
+          Text(value, style: style),
+        ],
+      ),
+    );
+  }
+
   Widget _buildBasketList(BasketRepository basket, List<TicketItem> items) {
     final List<Widget> children = [];
 
@@ -78,18 +98,16 @@ class _BasketViewState extends State<BasketView> {
 
     children.add(const SizedBox(height: 24));
     children.add(
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Total to pay',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          Text(
-            '£${basket.getTotal().toStringAsFixed(2)}',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-        ],
+      _buildTotalRow(
+        'Items subtotal',
+        '£${basket.getSubtotal().toStringAsFixed(2)}',
+      ),
+    );
+    children.add(
+      _buildTotalRow(
+        'Total to pay',
+        '£${basket.getTotalDue().toStringAsFixed(2)}',
+        emphasise: true,
       ),
     );
     children.add(const SizedBox(height: 24));
@@ -98,16 +116,26 @@ class _BasketViewState extends State<BasketView> {
       SizedBox(
         width: double.infinity,
         child: PrimaryButton(
-          label: 'CHECKOUT',
+          label: 'Checkout',
           onPressed: () {
             setState(() {
               basket.clear();
-              _confirmationMessage = 'Thanks, your tickets are booked';
+              _confirmationMessage = 'Thanks, your order is on its way';
             });
           },
         ),
       ),
     );
+
+    if (_confirmationMessage.isNotEmpty) {
+      children.add(const SizedBox(height: 12));
+      children.add(
+        Text(
+          _confirmationMessage,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

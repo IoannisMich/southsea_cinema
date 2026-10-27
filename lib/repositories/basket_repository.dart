@@ -21,11 +21,7 @@ class BasketRepository {
     }
   }
 
-  void clear() {
-    _items.clear();
-  }
-
-  int getTotalTickets() {
+  int getTotalItems() {
     int total = 0;
     for (final TicketItem item in _items) {
       total += item.quantity;
@@ -33,11 +29,23 @@ class BasketRepository {
     return total;
   }
 
-  double getTotal() {
+  int get totalItemCount {
+    return getTotalItems();
+  }
+
+  double getSubtotal() {
     double sum = 0.0;
     for (final TicketItem item in _items) {
       sum += item.lineTotal;
     }
     return sum;
+  }
+
+  double getTotalDue() {
+    return getSubtotal();
+  }
+
+  void clear() {
+    _items.clear();
   }
 }
