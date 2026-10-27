@@ -21,14 +21,7 @@ class _MovieListingState extends State<MovieListing> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(appTitle, style: cinemaHeaderStyle),
-        backgroundColor: cinemaSurface,
-        iconTheme: const IconThemeData(color: cinemaBrand),
-        elevation: 0,
+        title: const Text(appTitle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
