@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/main.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  setUp(() {
+    rootBundle.clear();
+  });
   group('Home page', () {
     testWidgets('displays the app title', (WidgetTester tester) async {
       await tester.pumpWidget(const SouthseaCinemaApp());
