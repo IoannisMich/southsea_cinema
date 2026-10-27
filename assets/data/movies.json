@@ -1,0 +1,24 @@
+[
+  {
+    "id": "the-hangover",
+    "title": "The Hangover",
+    "ageRating": "15",
+    "description": "A few days before his wedding, Doug Billings and his best men go to Las Vegas for a bachelor party. However, the next day, the friends realise that they have no recollection of the previous night.",
+    "posterImagePath": "assets/images/thehangover.jpg",
+    "showtimes": [
+      "Thursday 22 Oct 2026 18:00"
+    ],
+    "price": 7.50
+  },
+  {
+    "id": "fight-club",
+    "title": "Fight Club",
+    "ageRating": "18",
+    "description": "Unhappy with his capitalistic lifestyle, a white-collared insomniac forms an underground fight club with Tyler, a careless soap salesman. Soon, their venture spirals down into something sinister.",
+    "posterImagePath": "assets/images/fightclub.jpg",
+    "showtimes": [
+      "Saturday 24 Oct 2026 20:00"
+    ],
+    "price": 6.00
+  }
+]

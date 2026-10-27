@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:southsea_cinema/repositories/movie_repository.dart';
+import 'package:southsea_cinema/models/movie.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   final repository = MovieRepository();
 
   group('getMovies', () {
@@ -97,6 +99,15 @@ void main() {
 
     test('returns an empty list when the max price is below every price', () {
       expect(repository.getMoviesUnderPrice(1.00), isEmpty);
+    });
+    test('loadMoviesFromAsset reads the bundled JSON films', () async {
+      final MovieRepository repository = MovieRepository();
+      final List<Movie> movies = await repository.loadMoviesFromAsset();
+
+      expect(movies.length, 2);
+      expect(movies[0].id, 'the-hangover');
+      expect(movies[1].id, 'fight-club');
+      expect(repository.getMovies(), movies);
     });
   });
 }
