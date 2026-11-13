@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:southsea_cinema/models/user_settings.dart';
+
 void main() {
   group('UserSettings', () {
     test('default values are empty and newsletter is off', () {
