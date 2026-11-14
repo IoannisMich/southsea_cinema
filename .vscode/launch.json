@@ -2,16 +2,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Southsea Cinema (Edge)",
+      "name": "Southsea Cinema",
       "request": "launch",
-      "type": "dart",
-      "deviceId": "edge"
-    },
-    {
-      "name": "Southsea Cinema (Chrome)",
-      "request": "launch",
-      "type": "dart",
-      "deviceId": "chrome"
+      "type": "dart"
     }
   ]
 }
