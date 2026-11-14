@@ -100,6 +100,14 @@ class _MovieListingState extends State<MovieListing> {
                 Text('Adult (${movie.formattedPrice})'),
               ],
             ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const Text(
+                    'Subtotal for your selected tickets before discounts:'),
+                Text('£$widget.movie.price * $_ticketQuantity'),
+              ],
+            ),
             const SizedBox(height: 30),
             PrimaryButton(
               label: 'ADD TO ORDER',

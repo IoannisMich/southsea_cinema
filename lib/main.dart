@@ -91,6 +91,7 @@ class _SouthseaCinemaAppState extends State<SouthseaCinemaApp> {
         scaffoldBackgroundColor: cinemaBackground,
         colorScheme: ColorScheme.fromSeed(
           seedColor: cinemaBrand,
+          brightness: Brightness.dark,
           primary: cinemaBrand,
           surface: cinemaSurface,
         ),
