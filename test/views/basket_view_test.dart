@@ -18,6 +18,26 @@ final Movie testMovie = Movie(
   price: 10.0,
 );
 
+final Movie secondMovie = Movie(
+  id: 'second-movie',
+  title: 'Second Movie',
+  ageRating: 'PG',
+  description: 'Another test movie.',
+  posterImagePath: 'assets/images/thehangover.jpg',
+  showtimes: ['19:00'],
+  price: 8.0,
+);
+
+final Movie thirdMovie = Movie(
+  id: 'third-movie',
+  title: 'Third Movie',
+  ageRating: '18',
+  description: 'A third test movie.',
+  posterImagePath: 'assets/images/fightclub.jpg',
+  showtimes: ['21:00'],
+  price: 6.0,
+);
+
 void main() {
   setUp(() async {
     BasketRepository.instance.clear();
@@ -175,5 +195,37 @@ void main() {
     await tester.pump();
 
     expect(find.text('No bookings yet'), findsOneWidget);
+  });
+
+  testWidgets('Deleting the middle film keeps the other two', (
+    WidgetTester tester,
+  ) async {
+    BasketRepository.instance.addItem(
+      TicketItem(movie: testMovie, quantity: 1),
+    );
+    BasketRepository.instance.addItem(
+      TicketItem(movie: secondMovie, quantity: 1),
+    );
+    BasketRepository.instance.addItem(
+      TicketItem(movie: thirdMovie, quantity: 1),
+    );
+
+    await tester.runAsync(() async {
+      await tester.pumpWidget(const MaterialApp(home: BasketView()));
+      await tester.pumpAndSettle();
+    });
+    await tester.pump();
+
+    expect(find.text('1 x Test Movie'), findsOneWidget);
+    expect(find.text('1 x Second Movie'), findsOneWidget);
+    expect(find.text('1 x Third Movie'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('delete_1')));
+    await tester.pump();
+
+    expect(find.text('1 x Test Movie'), findsOneWidget);
+    expect(find.text('1 x Second Movie'), findsNothing);
+    expect(find.text('1 x Third Movie'), findsOneWidget);
+    expect(BasketRepository.instance.getItems().length, 2);
   });
 }

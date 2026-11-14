@@ -134,6 +134,7 @@ class _BasketViewState extends State<BasketView> {
             ),
           ),
           IconButton(
+            key: Key('delete_$index'),
             icon: const Icon(Icons.delete_outline, color: Colors.red),
             onPressed: () {
               setState(() {
