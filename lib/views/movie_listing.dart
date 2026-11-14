@@ -103,9 +103,14 @@ class _MovieListingState extends State<MovieListing> {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Text(
-                    'Subtotal for your selected tickets before discounts:'),
-                Text('£$widget.movie.price * $_ticketQuantity'),
+                const Expanded(
+                  child: Text(
+                    'Subtotal for your selected tickets before discounts:',
+                  ),
+                ),
+                Text(
+                  '£${(widget.movie.price * _ticketQuantity).toStringAsFixed(2)}',
+                ),
               ],
             ),
             const SizedBox(height: 30),
