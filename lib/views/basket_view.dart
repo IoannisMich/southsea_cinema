@@ -152,7 +152,7 @@ class _BasketViewState extends State<BasketView> {
     if (emphasise) {
       style = const TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
     } else {
-      style = const TextStyle(color: cinemaFontWhite);
+      style = const TextStyle();
     }
 
     return Padding(

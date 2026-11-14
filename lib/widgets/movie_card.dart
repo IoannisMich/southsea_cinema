@@ -11,8 +11,7 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bodyStyle = TextStyle(color: cinemaFontWhite, fontSize: 16);
-
+    const TextStyle bodyStyle = TextStyle(fontSize: 16);
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(

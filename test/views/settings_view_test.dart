@@ -11,7 +11,7 @@ void main() {
         InMemorySharedPreferencesAsync.empty();
   });
 
-  testWidgets('SettingsView displays form fields and switch', (
+  testWidgets('SettingsView displays form fields and switches', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const MaterialApp(home: SettingsView()));
@@ -19,7 +19,9 @@ void main() {
 
     expect(find.text('Customer Profile'), findsOneWidget);
     expect(find.byType(TextField), findsNWidgets(3));
-    expect(find.byType(Switch), findsOneWidget);
+    expect(find.byKey(const Key('newsletterSwitch')), findsOneWidget);
+    expect(find.byKey(const Key('darkModeSwitch')), findsOneWidget);
+    expect(find.text('Dark mode'), findsOneWidget);
     expect(find.text('Save Settings'), findsOneWidget);
   });
 
@@ -40,7 +42,7 @@ void main() {
       'gerald.vernon-jackson@portsmouthcc.gov.uk',
     );
 
-    final Finder switchFinder = find.byType(Switch);
+    final Finder switchFinder = find.byKey(const Key('newsletterSwitch'));
     expect(tester.widget<Switch>(switchFinder).value, isFalse);
     await tester.tap(switchFinder);
     await tester.pump();
@@ -72,7 +74,9 @@ void main() {
       find.text('gerald.vernon-jackson@portsmouthcc.gov.uk'),
       findsOneWidget,
     );
-    final Switch reopenedSwitch = tester.widget<Switch>(find.byType(Switch));
+    final Switch reopenedSwitch = tester.widget<Switch>(
+      find.byKey(const Key('newsletterSwitch')),
+    );
     expect(reopenedSwitch.value, isTrue);
   });
 
@@ -93,7 +97,74 @@ void main() {
     expect(find.text('Abdul Kadir'), findsOneWidget);
     expect(find.text('Portsmouth Guildhall, PO1 2AJ'), findsOneWidget);
     expect(find.text('abdul.kadir@portsmouthcc.gov.uk'), findsOneWidget);
-    final Switch switchWidget = tester.widget<Switch>(find.byType(Switch));
+    final Switch switchWidget = tester.widget<Switch>(
+      find.byKey(const Key('newsletterSwitch')),
+    );
     expect(switchWidget.value, isTrue);
+  });
+
+  testWidgets('Dark mode switch defaults on and can be toggled', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const MaterialApp(home: SettingsView()));
+    await tester.pumpAndSettle();
+
+    final Finder darkModeSwitch = find.byKey(const Key('darkModeSwitch'));
+    expect(tester.widget<SwitchListTile>(darkModeSwitch).value, isTrue);
+
+    await tester.tap(darkModeSwitch);
+    await tester.pump();
+    expect(tester.widget<SwitchListTile>(darkModeSwitch).value, isFalse);
+  });
+
+  testWidgets('Saving settings stores the dark mode choice', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const MaterialApp(home: SettingsView()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('darkModeSwitch')));
+    await tester.pump();
+    await tester.tap(find.text('Save Settings'));
+    await tester.pumpAndSettle();
+
+    final SharedPreferencesAsync prefs = SharedPreferencesAsync();
+    expect(await prefs.getBool(prefDarkMode), isFalse);
+  });
+
+  testWidgets('A saved light mode choice is loaded on open', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferencesAsyncPlatform.instance =
+        InMemorySharedPreferencesAsync.withData(<String, Object>{
+      prefDarkMode: false,
+    });
+
+    await tester.pumpWidget(const MaterialApp(home: SettingsView()));
+    await tester.pumpAndSettle();
+
+    final SwitchListTile darkModeSwitch = tester.widget<SwitchListTile>(
+      find.byKey(const Key('darkModeSwitch')),
+    );
+    expect(darkModeSwitch.value, isFalse);
+  });
+
+  testWidgets('Dark mode previews changes without saving them', (
+    WidgetTester tester,
+  ) async {
+    final List<bool> changes = [];
+    await tester.pumpWidget(
+      MaterialApp(
+        home: SettingsView(darkMode: true, onDarkModeChanged: changes.add),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('darkModeSwitch')));
+    await tester.pump();
+
+    expect(changes, <bool>[false]);
+    final SharedPreferencesAsync prefs = SharedPreferencesAsync();
+    expect(await prefs.getBool(prefDarkMode), isNull);
   });
 }

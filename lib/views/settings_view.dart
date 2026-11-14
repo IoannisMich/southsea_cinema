@@ -9,9 +9,17 @@ const String prefName = 'user_name';
 const String prefAddress = 'user_address';
 const String prefEmail = 'user_email';
 const String prefNewsletter = 'user_newsletter';
+const String prefDarkMode = 'dark_mode';
 
 class SettingsView extends StatefulWidget {
-  const SettingsView({super.key});
+  final bool darkMode;
+  final ValueChanged<bool>? onDarkModeChanged;
+
+  const SettingsView({
+    super.key,
+    this.darkMode = true,
+    this.onDarkModeChanged,
+  });
 
   @override
   State<SettingsView> createState() {
@@ -25,6 +33,7 @@ class _SettingsViewState extends State<SettingsView> {
   late TextEditingController _emailController;
   bool _receiveNewsletter = false;
   String _confirmationMessage = '';
+  bool _darkMode = true;
 
   @override
   void initState() {
@@ -32,6 +41,7 @@ class _SettingsViewState extends State<SettingsView> {
     _nameController = TextEditingController();
     _addressController = TextEditingController();
     _emailController = TextEditingController();
+    _darkMode = widget.darkMode;
     _loadSettings();
   }
 
@@ -49,6 +59,8 @@ class _SettingsViewState extends State<SettingsView> {
     final String? savedAddress = await prefs.getString(prefAddress);
     final String? savedEmail = await prefs.getString(prefEmail);
     final bool? savedNewsletter = await prefs.getBool(prefNewsletter);
+    final bool? savedDarkMode = await prefs.getBool(prefDarkMode);
+
     String name = '';
     if (savedName != null) {
       name = savedName;
@@ -77,6 +89,9 @@ class _SettingsViewState extends State<SettingsView> {
       _addressController.text = address;
       _emailController.text = email;
       _receiveNewsletter = newsletter;
+      if (widget.onDarkModeChanged == null && savedDarkMode != null) {
+        _darkMode = savedDarkMode;
+      }
     });
   }
 
@@ -90,6 +105,7 @@ class _SettingsViewState extends State<SettingsView> {
     await prefs.setString(prefAddress, address);
     await prefs.setString(prefEmail, email);
     await prefs.setBool(prefNewsletter, _receiveNewsletter);
+    await prefs.setBool(prefDarkMode, _darkMode);
 
     final UserSettings settings = UserSettings(
       name: name,
@@ -152,12 +168,29 @@ class _SettingsViewState extends State<SettingsView> {
               ),
             ),
             const SizedBox(height: 16),
+            SwitchListTile(
+              key: const Key('darkModeSwitch'),
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Dark mode'),
+              subtitle: const Text('Use dark colours across the app'),
+              value: _darkMode,
+              onChanged: (bool value) {
+                setState(() {
+                  _darkMode = value;
+                });
+                final ValueChanged<bool>? onChanged = widget.onDarkModeChanged;
+                if (onChanged != null) {
+                  onChanged(value);
+                }
+              },
+            ),
             Row(
               children: [
                 const Expanded(
                   child: Text('Receive newsletter and offers'),
                 ),
                 Switch(
+                  key: const Key('newsletterSwitch'),
                   value: _receiveNewsletter,
                   onChanged: (bool value) {
                     setState(() {
