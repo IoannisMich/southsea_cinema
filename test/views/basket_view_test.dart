@@ -7,6 +7,7 @@ import 'package:southsea_cinema/models/ticket_item.dart';
 import 'package:southsea_cinema/repositories/basket_repository.dart';
 import 'package:southsea_cinema/views/basket_view.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:southsea_cinema/models/booking_item.dart';
 
 final Movie testMovie = Movie(
   id: 'test-movie',
@@ -45,7 +46,8 @@ void main() {
     final Database database = await databaseFactoryFfiNoIsolate.openDatabase(
       inMemoryDatabasePath,
       options: OpenDatabaseOptions(
-        version: 1,
+        version: 2,
+        onConfigure: CinemaDatabase.instance.configureDatabase,
         onCreate: CinemaDatabase.instance.createTables,
       ),
     );
@@ -227,5 +229,53 @@ void main() {
     expect(find.text('1 x Second Movie'), findsNothing);
     expect(find.text('1 x Third Movie'), findsOneWidget);
     expect(BasketRepository.instance.getItems().length, 2);
+  });
+
+  testWidgets('Past bookings list each item with its price and line total', (
+    WidgetTester tester,
+  ) async {
+    await tester.runAsync(() async {
+      await CinemaDatabase.instance.insertBooking(
+        const Booking(
+          bookingNumber: 1001,
+          summary: '3 x Old Film',
+          total: 18.00,
+          date: '01/01/2026 10:00',
+        ),
+      );
+      await CinemaDatabase.instance.insertBooking(
+        const Booking(
+          bookingNumber: 1002,
+          summary: '2 x The Hangover, 1 x Fight Club',
+          total: 21.00,
+          date: '02/01/2026 11:00',
+          items: [
+            BookingItem(
+              movieId: 'the-hangover',
+              movieTitle: 'The Hangover',
+              unitPrice: 7.50,
+              quantity: 2,
+            ),
+            BookingItem(
+              movieId: 'fight-club',
+              movieTitle: 'Fight Club',
+              unitPrice: 6.00,
+              quantity: 1,
+            ),
+          ],
+        ),
+      );
+      await tester.pumpWidget(const MaterialApp(home: BasketView()));
+      await tester.pumpAndSettle();
+    });
+    await tester.pump();
+
+    expect(
+      find.text('2 x The Hangover at £7.50 each: £15.00'),
+      findsOneWidget,
+    );
+    expect(find.text('1 x Fight Club at £6.00 each: £6.00'), findsOneWidget);
+    expect(find.text('2 x The Hangover, 1 x Fight Club'), findsNothing);
+    expect(find.text('3 x Old Film'), findsOneWidget);
   });
 }

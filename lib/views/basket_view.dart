@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/database/cinema_db.dart';
 import 'package:southsea_cinema/models/booking.dart';
+import 'package:southsea_cinema/models/booking_item.dart';
 import 'package:southsea_cinema/models/ticket_item.dart';
 import 'package:southsea_cinema/repositories/basket_repository.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
@@ -73,6 +74,17 @@ class _BasketViewState extends State<BasketView> {
     final String summary = _buildSummary(items);
     final double total = basket.getTotalDue();
     final String date = _formatDate(DateTime.now());
+    final List<BookingItem> bookingItems = [];
+    for (final TicketItem item in items) {
+      bookingItems.add(
+        BookingItem(
+          movieId: item.movie.id,
+          movieTitle: item.movie.title,
+          unitPrice: item.movie.price,
+          quantity: item.quantity,
+        ),
+      );
+    }
 
     try {
       final CinemaDatabase database = CinemaDatabase.instance;
@@ -82,6 +94,7 @@ class _BasketViewState extends State<BasketView> {
         summary: summary,
         total: total,
         date: date,
+        items: bookingItems,
       );
 
       await database.insertBooking(booking);
@@ -228,6 +241,21 @@ class _BasketViewState extends State<BasketView> {
   }
 
   Widget _buildBookingCard(Booking booking) {
+    final List<Widget> itemDetails = [];
+    if (booking.items.isEmpty) {
+      itemDetails.add(Text(booking.summary));
+    } else {
+      for (final BookingItem item in booking.items) {
+        itemDetails.add(
+          Text(
+            '${item.quantity} x ${item.movieTitle} '
+            'at £${item.unitPrice.toStringAsFixed(2)} each: '
+            '£${item.lineTotal.toStringAsFixed(2)}',
+          ),
+        );
+      }
+    }
+
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
@@ -246,7 +274,7 @@ class _BasketViewState extends State<BasketView> {
               ],
             ),
             const SizedBox(height: 4),
-            Text(booking.summary),
+            ...itemDetails,
             const SizedBox(height: 4),
             Text(
               booking.date,

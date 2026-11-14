@@ -9,9 +9,9 @@ viewing past bookings. The app is set up for Android only.
 - Open a film to see its showtimes, choose up to five tickets and see the
   subtotal.
 - Review the basket, remove tickets and check out.
-- Save each checkout as a numbered booking and list past bookings under the
-  basket. Bookings are stored locally in SQLite; the basket is held in
-  memory.
+- Save each checkout as a numbered booking with its films, ticket prices
+  and quantities, and list past bookings under the basket. Bookings are
+  stored locally in SQLite; the basket is held in memory.
 - Save customer profile details and a newsletter choice on the device.
 - Switch between light and dark mode. The choice is saved on the device.
 
